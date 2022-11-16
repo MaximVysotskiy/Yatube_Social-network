@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% block title %} Список группы {{ group.title }} {% endblock %}
+{% include 'includes/header.html' %}
+{% block content %}
+  <div class="row">
+    <h1>{{ group.title }}</h1>
+    <p>{{ group.description }}</p>
+    {% for post in page_obj %}
+    <main>
+    <article>
+        <ul>
+          <li>
+            Автор:
+            <a href="{% url 'posts:profile' post.author %}">{{ post.author }}</a>
+          </li>
+          <li>
+            Дата публикации: {{ post.pub_date|date:"d E Y" }}
+          </li>
+        </ul>
+        <div class="col-12 col-md-6">
+        {% thumbnail post.image "240x170" pudding="True" upscale=True as im %}
+          <img class="card-img my-2" src="{{ im.url }}">
+        {% endthumbnail %}
+        </div>
+        <p>{{ post.text }}</p>
+        <a href="{% url 'posts:post_detail' post.id %}">подробная
+          информация</a>
+      </article>
+      <main>
+      {% if not forloop.last %}
+        <hr>
+      {% endif %}
+    {% endfor %}
+{% include 'posts/includes/paginator.html' %}
+{% endblock %}
