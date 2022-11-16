@@ -11,8 +11,10 @@ class ViewTests(TestCase):
             "users/login.html": reverse("users:login"),
             "users/logged_out.html": reverse("users:logout"),
             "users/password_reset_form.html": reverse("users:password_reset"),
-            "users/password_reset_complete.html": reverse("users:password_reset_complete"),
-            "users/password_reset_done.html": reverse("users:password_reset_done"),
+            "users/password_reset_complete.html": reverse(
+                "users:password_reset_complete"),
+            "users/password_reset_done.html": reverse(
+                "users:password_reset_done"),
         }
 
     def test_pages_uses_correct_template(self):

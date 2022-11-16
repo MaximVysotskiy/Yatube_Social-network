@@ -39,7 +39,6 @@ class Post(models.Model):
         upload_to='posts/',
         blank=True)
 
-
     class Meta:
         ordering = ('-pub_date',)
         verbose_name = 'Пост'
@@ -69,8 +68,7 @@ class Comments(models.Model):
     text = models.TextField(
         'Текст',
         help_text='Текст нового комментария',
-        blank = False)
-
+        blank=False)
 
     class Meta:
         ordering = ('-created',)
@@ -82,11 +80,11 @@ class Comments(models.Model):
 class Follow(models.Model):
     user = models.ForeignKey(
         User,
-        on_delete = models.CASCADE,
+        on_delete=models.CASCADE,
         related_name='follower'
     )
     author = models.ForeignKey(
         User,
-        on_delete = models.CASCADE,
+        on_delete=models.CASCADE,
         related_name='following'
     )

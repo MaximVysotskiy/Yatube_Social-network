@@ -60,8 +60,7 @@ def post_detail(request, post_id):
 def post_create(request):
     form = PostForm(
         request.POST or None,
-        files=request.FILES or None
-        )
+        files=request.FILES or None)
     if form.is_valid():
         post = form.save(commit=False)
         post.author = request.user
@@ -104,6 +103,7 @@ def add_comment(request, post_id):
         comment.save()
     return redirect('posts:post_detail', post_id=post_id)
 
+
 @login_required
 def follow_index(request):
     posts = Post.objects.filter(author__following__user=request.user)
@@ -113,6 +113,7 @@ def follow_index(request):
     }
     return render(request, "posts/follow.html", context)
 
+
 @login_required
 def profile_follow(request, username):
     user = request.user
@@ -121,6 +122,7 @@ def profile_follow(request, username):
     if user != author and not is_follower.exists():
         Follow.objects.create(user=user, author=author)
     return redirect("posts:follow_index")
+
 
 @login_required
 def profile_unfollow(request, username):
