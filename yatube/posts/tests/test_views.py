@@ -7,7 +7,7 @@ from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
-from posts.models import Comments, Follow, Group, Post, User
+from posts.models import Comment, Follow, Group, Post, User
 
 
 class PostPagesTests(TestCase):
@@ -161,7 +161,7 @@ class PostPagesTests(TestCase):
 
     def test_comment_correct_context(self):
         """Форма Комментария создает запись в Post"""
-        comments_count = Comments.objects.count()
+        comments_count = Comment.objects.count()
         form_data = {"text": "Тестовый комментарий"}
         response = self.authorized_client.post(
             reverse("posts:add_comment", kwargs={"post_id": self.post.id}),
@@ -171,9 +171,9 @@ class PostPagesTests(TestCase):
             response,
             reverse('posts:post_detail', kwargs={"post_id": self.post.id})
         )
-        self.assertEqual(Comments.objects.count(), comments_count + 1)
+        self.assertEqual(Comment.objects.count(), comments_count + 1)
         self.assertTrue(
-            Comments.objects.filter(text="Тестовый комментарий").exists())
+            Comment.objects.filter(text="Тестовый комментарий").exists())
 
     def test_cache_index(self):
         """Проверка хранения и очищения кэша для index."""

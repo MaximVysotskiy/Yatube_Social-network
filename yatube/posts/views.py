@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CommentForm, PostForm
-from .models import Comments, Follow, Group, Post, User
+from .models import Comment, Follow, Group, Post, User
 from .utils import get_page_context
 
 
@@ -45,7 +45,7 @@ def profile(request, username):
 def post_detail(request, post_id):
     form = CommentForm(request.POST or None)
     post = get_object_or_404(Post, id=post_id)
-    comments = Comments.objects.filter(post=post)
+    comments = Comment.objects.filter(post=post)
     post_count = post.author.posts.count()
     context = {
         'post': post,

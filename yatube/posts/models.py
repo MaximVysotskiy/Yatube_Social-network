@@ -48,7 +48,7 @@ class Post(models.Model):
         return self.text[:15]
 
 
-class Comments(models.Model):
+class Comment(models.Model):
     post = models.ForeignKey(
         Post,
         blank=True,
