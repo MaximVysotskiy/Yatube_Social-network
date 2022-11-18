@@ -7,6 +7,8 @@ from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
+from mixer.backend.django import mixer
+
 from posts.models import Comment, Follow, Group, Post, User
 
 
@@ -15,11 +17,7 @@ class PostPagesTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.user = User.objects.create(username="agent 007")
-        cls.group = Group.objects.create(
-            title="Тестовая группа",
-            slug="test-slug",
-            description="Тестовое описание",
-        )
+        cls.group = mixer.blend(Group)
         cls.post = Post.objects.create(
             author=cls.user,
             text='text',
@@ -72,8 +70,8 @@ class PostPagesTests(TestCase):
     def test_index_show_correct_context(self):
         """Список постов в шаблоне index равен ожидаемому контексту."""
         response = self.authorized_client.get(reverse("posts:index"))
-        expected = list(Post.objects.all())
-        self.assertEqual(list(response.context["page_obj"]), expected)
+        expected = Post.objects.all()[0]
+        self.assertEqual(response.context["page_obj"][0], expected)
 
     def test_group_list_show_correct_context(self):
         """Список постов в шаблоне group_list равен ожидаемому контексту."""

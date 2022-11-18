@@ -1,4 +1,6 @@
 from django.test import TestCase
+from mixer.backend.django import mixer
+
 from posts.models import Group, Post, User
 
 
@@ -7,11 +9,7 @@ class PostModelTest(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.user = User.objects.create_user(username='agent007')
-        cls.group = Group.objects.create(
-            title='Тестовая группа',
-            slug='Тестовый слаг',
-            description='Тестовое описание',
-        )
+        cls.group = mixer.blend(Group)
         cls.post = Post.objects.create(
             author=cls.user,
             text='Тестовый пост',
@@ -27,14 +25,12 @@ class PostModelTest(TestCase):
 
     def test_group_have_correct_object_names(self):
         """Проверяем, что у моделей корректно работает __str__."""
-        group = PostModelTest.group
-        expected_object_name = group.title
-        self.assertEqual(expected_object_name, str(group))
+        expected_object_name = self.group.title
+        self.assertEqual(expected_object_name, str(self.group))
 
     def test_post_have_correct_object_names(self):
-        post = PostModelTest.post
-        expected_object_name = post.text[:15]
-        self.assertEqual(expected_object_name, str(post))
+        expected_object_name = self.post.text[:15]
+        self.assertEqual(expected_object_name, str(self.post))
 
     def test_verbose_name(self):
         """verbose_name в полях совпадает с ожидаемым."""

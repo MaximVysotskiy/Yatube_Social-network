@@ -1,6 +1,8 @@
 from http import HTTPStatus
 
 from django.test import Client, TestCase
+from mixer.backend.django import mixer
+
 from posts.models import Group, Post, User
 
 
@@ -9,9 +11,7 @@ class PostURLTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.user = User.objects.create_user(username='test')
-        cls.group = Group.objects.create(
-            title='Заголовок',
-            slug='test_slug')
+        cls.group = mixer.blend(Group)
         cls.post = Post.objects.create(
             text='Тестовая запись',
             author=cls.user,
