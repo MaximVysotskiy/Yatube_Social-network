@@ -103,7 +103,6 @@ def follow_index(request):
     posts = Post.objects.filter(author__following__user=request.user)
     context = {
         'page_obj': get_page_context(posts, request),
-        "title": "Избранные посты",
     }
     return render(request, "posts/follow.html", context)
 
